@@ -1,0 +1,216 @@
+:root {
+  --orange: #FF783E;
+  --black: #000;
+  --white: #FFFFFF;
+  --footer-bg: #6F2C00;
+  --footer-accent: #FF7C3B;
+  --footer-text: #DBDBDB;
+  --orange1: #FFEACF;
+}
+
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Body */
+body {
+  font-family: 'Onest', sans-serif;
+  background-color: var(--orange1); 
+  color: var(--black);
+}
+
+/* Header (keep same style) */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--white);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+}
+.nav-left { display: flex; align-items: center; gap: 10px; }
+.logo { width: 50px; height: auto; }
+.brand {
+  font-family: 'Lilita One', cursive;
+  color: var(--orange);
+  font-size: 28px;
+}
+.main-nav ul { display: flex; gap: 40px; list-style: none; }
+.main-nav a {
+  text-decoration: none;
+  color: var(--black);
+  font-weight: 600;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+.main-nav a:hover,
+.main-nav a.active { color: var(--orange); }
+
+/* Menu layout */
+.menu-main {
+  padding-top: 120px;
+  padding-bottom: 80px;
+}
+
+.menu-title {
+  text-align: center;
+  font-family: 'Lilita One', cursive;
+  font-size: 64px;
+  color: var(--orange);
+  -webkit-text-stroke: 1px #000;
+  margin-bottom: 60px;
+}
+
+/* Sidebar + grid layout */
+.menu-layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Sidebar */
+.menu-sidebar {
+  background: var(--white);
+  border-radius: 10px;
+  padding: 20px;
+  min-width: 220px;
+}
+
+.menu-sidebar ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.menu-sidebar li {
+  padding: 10px 14px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--black);
+  background: var(--white);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.menu-sidebar li:hover {
+  background: var(--orange);
+}
+
+.menu-sidebar li.active {
+  background: var(--orange);
+  color: var(--white);
+}
+
+/* Product grid */
+.menu-products {
+  flex: 1;
+}
+.menu-item img {
+  display: block;
+  margin: 0 auto;  /* centers the image horizontally */
+  transition: transform 0.3s ease;
+}
+
+.menu-item img:hover {
+  transform: scale(1.1);
+}
+
+.menu-products {
+  flex: 1;
+  max-width: 900px; /* adjust until it feels right */
+  margin: 0 auto;     /* centers the grid */
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+.menu-item {
+  background: var(--white);
+  border-radius: 10px;
+  padding: 30px;
+  text-align: left; /* changed */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.menu-item img {
+  width: 230px;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 14px;
+}
+
+.menu-item .info {
+  padding: 0 5px;
+}
+
+.menu-item .name {
+  font-weight: 700; /* bolder name */
+  font-size: 18px;
+  color: var(--black);
+  margin-bottom: 4px;
+}
+
+.menu-item .price {
+  font-weight: 400; /* thinner text weight */
+  font-size: 16px;
+  color: var(--black);
+}
+
+/* Footer */
+.site-footer {
+  background-color: var(--footer-bg);
+  color: var(--footer-text);
+  padding: 50px 80px 30px 80px;
+  font-family: 'Onest', sans-serif;
+  margin-top: 80px;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.footer-left { max-width: 500px; }
+.footer-logo { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.footer-logo img { width: 55px; height: 55px; object-fit: contain; }
+.footer-logo h2 {
+  font-family: 'Lilita One', cursive;
+  color: var(--footer-accent);
+  font-size: 36px;
+  margin: 0;
+}
+.footer-left p { font-size: 16px; line-height: 1.5; color: var(--footer-text); }
+.footer-nav { display: flex; align-items: center; gap: 32px; }
+.footer-nav a {
+  color: var(--footer-text);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+.footer-nav a:hover { color: var(--footer-accent); }
+.footer-line {
+  height: 1px;
+  background-color: var(--footer-text);
+  margin: 40px 0 20px 0;
+  width: 100%;
+}
+.footer-bottom { text-align: left; }
+.footer-bottom p { font-size: 14px; margin: 0; }

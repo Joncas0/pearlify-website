@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Status | Pearlify</title>
+  <link rel="stylesheet" href="../CSS/order-status.css">
+</head>
+<body>
+  <div id="header"></div>
+
+  <main class="status-page">
+    <div class="status-container">
+      <!-- Order Header -->
+      <div class="order-header">
+        <h1>Order Status</h1>
+        <div class="order-meta">
+          <p><strong>Order ID:</strong> <span id="order-id">--</span></p>
+          <p><strong>Placed:</strong> <span id="order-date">--</span></p>
+        </div>
+      </div>
+
+      <!-- Status Timeline -->
+      <div class="status-timeline">
+        <div class="status-step" data-status="received">
+          <div class="step-icon">📋</div>
+          <div class="step-content">
+            <h3>Order Received</h3>
+            <p>Kitchen has received your order</p>
+            <span class="step-time" id="time-received">--</span>
+          </div>
+        </div>
+
+        <div class="status-step" data-status="preparing">
+          <div class="step-icon">👨‍🍳</div>
+          <div class="step-content">
+            <h3>Preparing</h3>
+            <p>Your milktea is being made</p>
+            <span class="step-time" id="time-preparing">--</span>
+          </div>
+        </div>
+
+        <div class="status-step" data-status="delivery">
+          <div class="step-icon">🚗</div>
+          <div class="step-content">
+            <h3>Out for Delivery</h3>
+            <p>On the way to you!</p>
+            <span class="step-time" id="time-delivery">--</span>
+          </div>
+        </div>
+
+        <div class="status-step" data-status="delivered">
+          <div class="step-icon">🎉</div>
+          <div class="step-content">
+            <h3>Delivered</h3>
+            <p>Enjoy your milktea!</p>
+            <span class="step-time" id="time-delivered">--</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Details -->
+      <div class="order-details">
+        <h2>Order Summary</h2>
+        <div id="order-items">
+          <!-- Items will be loaded by JavaScript -->
+        </div>
+        <div class="order-total">
+          <strong>Total: <span id="order-total">₱0</span></strong>
+        </div>
+      </div>
+
+      <!-- Customer Info -->
+      <div class="customer-info">
+        <h2>Delivery Information</h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Name:</label>
+            <span id="customer-name">--</span>
+          </div>
+          <div class="info-item">
+            <label>Contact:</label>
+            <span id="customer-contact">--</span>
+          </div>
+          <div class="info-item">
+            <label>Address:</label>
+            <span id="customer-address">--</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Refresh Button -->
+      <div class="refresh-section">
+        <button id="refresh-btn" class="refresh-btn">🔄 Refresh Status</button>
+        <p class="refresh-note">Status updates every time you refresh</p>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../JS/header-footer.js"></script>
+  <script src="../JS/order-status.js"></script>
+</body>
+</html>

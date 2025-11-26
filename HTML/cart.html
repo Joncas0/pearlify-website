@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart | Pearlify</title>
+  <link rel="stylesheet" href="../CSS/cart.css">
+
+</head>
+
+<body>
+  <div id="header"></div>
+
+  <main class="cart-page">
+    <h1>Your Cart</h1>
+    <div class="cart-container-wrapper">
+    <div class="cart-container">
+        <h1 class="cart-title">Your Cart</h1>
+      <div id="empty-cart" class="empty">Your cart is empty.</div>
+
+      <div id="cart-items" class="cart-items"></div>
+
+      <div class="cart-summary">
+        <p><strong>Total:</strong> <span id="cart-total">₱0</span></p>
+        <button id="checkout-btn">Proceed to Checkout</button>
+      </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../JS/header-footer.js"></script>
+  <script src="../JS/cart.js"></script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+/* Reset all defaults */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  font-family: 'Onest', sans-serif;
+  background: #f7f7f7;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header-cart-icon {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+
+/* Add missing dot to select class */
+.cart-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* horizontal centering */
+  width: 100%;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.cart-container-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 40px; /* space from header */ 
+}
+
+.cart-container {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  width: 100%;
+  max-width: 800px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.cart-title {
+  margin: 0 0 20px 0; /* spacing below the title */
+  font-size: 30px;
+  text-align: left; /* ensures it stays left aligned */
+}
+/* Cart items layout */
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-bottom: 25px;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee; /* Added for better separation */
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.cart-item img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.cart-info {
+  flex: 1;
+  margin-left: 20px;
+}
+
+.cart-info h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+/* UPDATED: Cart actions with quantity controls */
+.cart-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px; /* Space between elements */
+}
+
+.cart-actions p {
+  font-weight: bold;
+  margin: 0;
+  font-size: 16px;
+}
+
+/* UPDATED: Quantity controls styling */
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0; /* Remove top margin since it's in cart-actions now */
+}
+
+.qty-btn {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ddd;
+  background: #f5f5f5;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty-btn:hover {
+  background: #e0e0e0;
+}
+
+.quantity {
+  font-weight: bold;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Button styles */
+.edit-btn,
+.remove-btn,
+.qty-btn {
+  border: none;
+  background: #FF783E;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.remove-btn {
+  background: #3b3b3b;
+}
+
+.qty-btn {
+  background: #f5f5f5;
+  color: #333;
+  padding: 5px; /* Smaller padding for quantity buttons */
+  width: 30px;
+  height: 30px;
+}
+
+.cart-summary {
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  padding: 20px;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 20px;
+  border-top: 1px solid #eee;
+}
+
+#checkout-btn {
+  background: #FF783E;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.empty {
+  text-align: center;
+  padding: 50px 0;
+  color: #666;
+  font-size: 18px;
+}
+
+/* Warning styles */
+.quantity-warning {
+  color: #ff4444;
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.total-warning {
+  background: #ffe6e6;
+  border: 1px solid #ff4444;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 20px;
+  color: #ff4444;
+  font-weight: bold;
+  text-align: center;
+}
+
+.max-quantity {
+  color: #ff4444;
+  font-weight: bold;
+}
+
+.disabled-btn {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+}
+
+.disabled-btn:hover {
+  background: #f5f5f5 !important;
+}
+
+#footer {
+  margin-top: auto;
+}
+
+/* --- FIX HEADER ICON SIZE ON CART PAGE --- */
+
+/* Fix the logo image size */
+#header .logo {
+  width: auto !important;
+  height: 40px !important;
+  object-fit: contain;
+  display: block;
+}
+
+/* Fix the cart and other nav icons */
+#header .nav-icon {
+  width: 26px !important;
+  height: 26px !important;
+  object-fit: contain;
+  display: block;
+}
+
+/* Make sure header stays positioned correctly */
+#header .site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+#header .cart-link { transform: translateY(10px); }
+
+

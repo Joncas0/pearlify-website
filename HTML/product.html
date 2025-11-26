@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Product | Pearlify</title>
+  <link rel="stylesheet" href="../CSS/product.css" />
+</head>
+<body>
+  <!-- header placeholder (your header/footer script will load actual header/footer into these) -->
+  <div id="header"></div>
+
+  <main class="product-main">
+    <div class="product-detail">
+
+      <!-- Left: Product Image -->
+      <div class="product-image">
+        <img id="product-image" src="" alt="product image" />
+      </div>
+
+      <!-- Right: Options and Add to Basket -->
+      <div class="product-options">
+
+        <!-- Product Name -->
+        <h2 id="product-name" class="product-name">Product Name</h2>
+
+        <!-- Description / placeholder -->
+        <p id="product-desc" class="product-desc" aria-hidden="true"></p>
+
+        <!-- Size Selection (buttons generated) -->
+        <div class="option-group">
+          <div class="option-header">
+            <span>Size</span>
+            <span class="option-subtext">Pick One</span>
+          </div>
+          <div id="size-buttons" class="option-buttons"></div>
+        </div>
+
+        <!-- Sweetness Level (buttons generated) -->
+        <div class="option-group">
+          <div class="option-header">
+            <span>Sweetness Level</span>
+            <span class="option-subtext">(Pick One)</span>
+          </div>
+          <div id="sweet-buttons" class="option-buttons"></div>
+        </div>
+
+        <!-- Add-ons (buttons generated) -->
+        <div class="option-group">
+          <div class="option-header">
+            <span>Add-on</span>
+            <span class="option-subtext">Optional — Max 2</span>
+          </div>
+          <div id="addon-buttons" class="option-buttons"></div>
+        </div>
+
+        <!-- Bottom area: price & add to basket -->
+        <div class="bottom-actions">
+          <div id="current-price" class="current-price" aria-live="polite">₱0</div>
+          <button id="add-basket-btn" class="add-basket-btn">Add to basket - ₱0</button>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <!-- cart counter-->>
+  <script src="../JS/cart-count.js"></script>
+  <!-- header/footer loader (if you have it) -->
+  <script src="../JS/header-footer.js"></script>
+
+  <!-- your products list must be loaded first -->
+  <script src="../JS/product-list.js"></script>
+
+  <!-- dynamic product page -->
+  <script src="../JS/product-page.js"></script>
+</body>
+</html>

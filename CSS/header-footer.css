@@ -1,0 +1,219 @@
+/* Set colors for easy reuse */
+:root {
+  --orange: #FF783E;
+  --black: #000;
+  --white: #fff;
+  --orange1: #FFEACF;
+}
+
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--orange1);
+  font-family: 'Onest', sans-serif;
+  color: var(--black);
+}
+
+/* Header container */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--white);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+/* Flex layout for inner header */
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  height: 80px;
+}
+
+/* Logo + text container */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;               /* space between logo and text */
+}
+
+/* Logo image */
+.logo {
+  height: 40px;            /* control size here */
+  width: auto;
+  display: block;
+}
+
+/* Pearlify text beside logo */
+.brand-text {
+  font-family: 'Lilita One', cursive;
+  font-size: 26px;
+  color: var(--orange);
+  letter-spacing: 0.5px;
+}
+
+/* Navigation links */
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: var(--black);
+  font-family: 'Onest', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  transition: color 0.3s;
+  display: flex;
+  align-items: center;
+}
+
+
+.main-nav a:hover,
+.main-nav a.active {
+  color: var(--orange);
+}
+
+.nav-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+.cart-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cart-link {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-icon {
+  width: 26px;
+  height: 26px;
+  display: block;
+}
+
+.cart-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--orange);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 50%;
+  padding: 2px 6px;
+  line-height: 1;
+  min-width: 16px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.main-nav li:last-child,
+.main-nav li:nth-last-child(2) {
+  margin-left: 10px;
+}
+
+
+
+/* Footer base */
+.site-footer {
+  background-color: #6F2C00;
+  color: #DBDBDB;
+  padding: 50px 80px 30px 80px;
+  font-family: 'Onest', sans-serif;
+}
+
+/* Top section: logo and nav */
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* Left side: logo and tagline */
+.footer-left {
+  max-width: 500px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.footer-logo img {
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
+}
+
+.footer-logo h2 {
+  font-family: 'Lilita One', cursive;
+  color: #FF7C3B;
+  font-size: 36px;
+  margin: 0;
+}
+
+.footer-left p {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #DBDBDB;
+  margin: 0;
+}
+
+/* Navigation links on one line */
+.footer-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.footer-nav a {
+  color: #DBDBDB;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.footer-nav a:hover {
+  color: #FF7C3B;
+}
+
+/* Divider line */
+.footer-line {
+  height: 1px;
+  background-color: #DBDBDB;
+  margin: 40px 0 20px 0;
+  width: 100%;
+}
+
+/* Bottom copyright */
+.footer-bottom {
+  text-align: center;
+}
+
+.footer-bottom p {
+  color: #DBDBDB;
+  font-size: 14px;
+  margin: 0;
+}

@@ -1,0 +1,289 @@
+/* Set colors for easy reuse */
+:root {
+  --orange: #FF783E;
+  --black: #000;
+  --white: #fff;
+  --orange1: #FFEACF;
+}
+
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--orange1);
+  font-family: 'Onest', sans-serif;
+  color: var(--black);
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  margin-top: 0;
+}
+
+.hero img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+/* Overlay text */
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 8%;                    /* pushes text to the left side */
+  transform: translateY(-50%);
+  text-align: left;            /* left-aligns everything */
+  max-width: 700px;
+}
+
+/* Heading */
+.hero-content h1 {
+  font-family: 'Lilita One', cursive;
+  font-size: 72px;
+  line-height: 1.1;
+  color: #FF783E;              /* orange color */
+  -webkit-text-stroke: 1px #000; /* black stroke around text */
+  text-shadow: 1px #000;         /* for other browsers */
+  margin-bottom: 25px;
+}
+
+/* Paragraph text */
+.hero-content p {
+  font-family: 'Onest', sans-serif;
+  font-size: 20px;
+  color: #000;                 /* black text */
+  line-height: 1.5;
+  margin-bottom: 40px;
+}
+
+/* Single button */
+.btn-orange {
+  background-color: #FF783E;
+  color: #fff;
+  padding: 14px 36px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: background-color 0.3s;
+  display: inline-block;
+}
+
+.btn-orange:hover {
+  background-color: #e6682a;
+}
+
+/* Best Selling Section */
+.best-selling {
+  background: #FFEACF;
+  padding: 80px 0;
+  text-align: center;
+}
+
+/* Title matches hero style */
+.best-selling h2 {
+  font-family: 'Lilita One', cursive;
+  font-size: 72px;
+  line-height: 1;
+  color: #FF783E;
+  -webkit-text-stroke: 1px #000;
+  text-box-edge: 1px #000;
+  margin-bottom: 60px;
+}
+
+/* Product grid layout */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: center;
+  align-items: start;
+  gap: 40px;
+  width: 50%;
+  margin: 0 auto 60px auto;
+}
+
+/* Each product */
+.product {
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+/* Hover effect for entire product */
+.product:hover {
+  transform: translateY(-10px);
+}
+
+/* Orange container around image */
+.product-box {
+  background-color: #FDC178;
+  width: 250px;
+  height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  border-radius: 40px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover effect for product box */
+.product:hover .product-box {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  background-color: #FFB366; /* Slightly darker orange on hover */
+}
+
+/* Image inside container */
+.product-box img {
+  width: 230px;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+/* Hover effect for image */
+.product:hover .product-box img {
+  transform: scale(1.1);
+}
+
+/* Product name text */
+.product p {
+  font-family: 'Onest', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #000;
+  margin-top: 14px;
+  transition: all 0.3s ease;
+}
+
+/* Hover effect for product name */
+.product:hover p {
+  color: #FF783E;
+  transform: translateY(-2px);
+}
+
+/* Button */
+.btn-orange {
+  background-color: #FF783E;
+  color: #fff;
+  padding: 14px 36px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: background-color 0.3s;
+  display: inline-block;
+}
+
+.btn-orange:hover {
+  background-color: #e6682a;
+  transform: translateY(-2px);
+}
+/* Loyalty section */
+.loyalty {
+  background: #FFEACF;          /* new background color */
+  padding: 80px 0;
+}
+
+/* Container: image left, text right */
+.loyalty-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Image side */
+.loyalty-image img {
+  width: 675px;
+  height: 675px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+
+/* Text side */
+.loyalty-text {
+  text-align: right;
+  flex: 1;
+}
+
+.loyalty-text h2 {
+  font-family: 'Lilita One', cursive;
+  font-size: 60px;
+  line-height: 1.1;
+  color: #FF783E;
+  -webkit-text-stroke: 1px #000;
+  margin-bottom: 10px;
+}
+
+.loyalty-text h3 {
+  font-family: 'Lilita One', cursive;
+  font-size: 36px;
+  margin-bottom: 16px;
+  color: #000;
+}
+
+.loyalty-text p {
+  font-family: 'Onest', sans-serif;
+  font-size: 18px;
+  color: #000;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+/* Button row */
+.loyalty-text .buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+/* Button styles (reuse from earlier) */
+.btn-orange {
+  background-color: #FF783E;
+  color: #fff;
+  padding: 14px 36px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: background-color 0.3s;
+}
+
+.btn-orange:hover {
+  background-color: #e6682a;
+}
+
+.btn-black {
+  background-color: #000;
+  color: #fff;
+  padding: 14px 36px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: background-color 0.3s;
+}
+
+.btn-black:hover {
+  background-color: #222;
+}
+
+
+
+@media (max-width:1200px){
+  .page-wrap{transform:scale(.62);transform-origin:top center}
+  body{overflow:auto}
+}
