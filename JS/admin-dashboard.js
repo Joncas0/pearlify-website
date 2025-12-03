@@ -101,7 +101,7 @@ function filterOrdersByTimePeriod(orders, period) {
 }
 
 // ========================
-// KEY METRICS CALCULATIONS - REMOVED FAKE TRENDS
+// KEY METRICS CALCULATIONS 
 // ========================
 
 function updateKeyMetrics(orders) {
@@ -174,7 +174,7 @@ function resetMetricsToZero() {
 }
 
 // ========================
-// TOP FLAVORS CHART - UPDATED
+// TOP FLAVORS CHART
 // ========================
 
 function updateTopFlavorsChart(orders) {
@@ -815,4 +815,5 @@ function addChartHoverEffects() {
             }
         });
     });
+
 }
