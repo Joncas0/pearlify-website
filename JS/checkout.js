@@ -1,160 +1,106 @@
-// checkout.js — UPDATED VERSION WITH ORDER STATUS REDIRECT
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | Pearlify</title>
+  <link rel="stylesheet" href="../CSS/checkout.css">
+</head>
+<body>
 
-document.addEventListener("DOMContentLoaded", () => {
-  // ----- DOM Elements -----
-  const orderItemsContainer = document.getElementById("order-items");
-  const grandTotalEl = document.getElementById("grand-total");
-  const placeOrderBtn = document.getElementById("place-order-btn");
+  <div id="header"></div>
 
-  // Form fields
-  const fullName = document.getElementById("fullName");
-  const email = document.getElementById("email");
-  const contact = document.getElementById("contact");
-  const address = document.getElementById("address");
-  const notes = document.getElementById("notes");
-  const paymentRadios = document.getElementsByName("payment");
+  <main class="checkout-page">
+    <h1>Checkout</h1>
 
-  // Cart array
-  let cart = [];
+    <div class="checkout-container">
+<!-- LEFT: ORDER SUMMARY -->
+<div class="order-summary">
+  <h2>Order Summary</h2>
 
-  // ----- Load Cart from localStorage -----
-  function loadCart() {
-    const storedCart = localStorage.getItem("cart");
-    cart = storedCart ? JSON.parse(storedCart) : [];
+  <!-- Column Labels -->
+  <div class="order-header">
+    <span class="col-drink">Drink</span>
+    <span class="col-price">Price</span>
+    <span class="col-qty">Quantity</span>
+    <span class="col-total">Total</span>
+  </div>
 
-    if (cart.length === 0) {
-      orderItemsContainer.innerHTML = '<div class="empty">Your cart is empty</div>';
-      grandTotalEl.textContent = "₱0";
-      return;
-    }
+  <div id="order-items">
+    <!-- Cart items will be loaded here by JavaScript -->
+  </div>
 
-    renderCart();
-  }
+  <!-- NEW: Separate Grand Total Container -->
+  <div class="order-summary-footer">
+    <div class="grand-total-container">
+      <span class="grand-total-label">Grand Total:</span>
+      <span class="grand-total-amount" id="grand-total">₱0</span>
+    </div>
+    <button class="back-to-cart-btn" onclick="window.location.href='cart.html'">
+      ← Back to Cart
+    </button>
+  </div>
+</div>
+      <!-- RIGHT: CHECKOUT FORM -->
+      <div class="checkout-form">
+        <h2>Checkout Options</h2>
 
-  // ----- Render Cart Items to DOM -----
-  function renderCart() {
-    orderItemsContainer.innerHTML = "";
+        <div class="option-group">
+  <label>
+    <input type="radio" name="orderType" value="delivery" checked>
+    Delivery
+  </label>
+</div>
 
-    cart.forEach((item, index) => {
-      const quantity = item.qty || item.quantity || 1;
-      const price = item.totalPrice || item.price || item.basePrice || 0;
-      const itemTotal = price * quantity;
+<!-- Delivery form -->
+<div id="delivery-info">
+  <h3 id="delivery-info-text">Delivery Information</h3>
+  
+  <label class="field full-name">
+    Full Name
+    <input type="text" id="fullName" placeholder="Enter your full name" required>
+  </label>
 
-      const itemEl = document.createElement("div");
-      itemEl.className = "order-item";
+  <label class="field email">
+    Email
+    <input type="email" id="email" placeholder="Enter your email address" required>
+  </label>
 
-      itemEl.innerHTML = `
-        <div class="item-left">
-          <img src="${item.image}" alt="${item.name}">
-          <div class="item-info">
-            <h3>${item.name}</h3>
-            <p>Size: ${item.size || "Regular"}</p>
-            <p>Sweetness: ${item.sugar || "Standard"}</p>
-            <p>Add-ons: ${item.addons?.length ? item.addons.join(", ") : "None"}</p>
-          </div>
-        </div>
-        <div class="item-right">
-          <span class="price">₱${price.toLocaleString()}</span>
-          <span class="quantity">${quantity}</span>
-          <span class="total">₱${itemTotal.toLocaleString()}</span>
-        </div>
-      `;
+  <label class="field contact">
+    Contact Number
+    <input type="text" id="contact" placeholder="09XXXXXXXXX" required>
+  </label>
 
-      orderItemsContainer.appendChild(itemEl);
-    });
+  <label class="field address">
+    Address
+    <input type="text" id="address" placeholder="Complete delivery address" required>
+  </label>
 
-    updateGrandTotal();
-  }
+  <label class="field notes">
+    Notes (optional)
+    <textarea id="notes" placeholder="Any additional instructions?"></textarea>
+  </label>
 
-  // ----- Compute Grand Total -----
-  function updateGrandTotal() {
-    const total = cart.reduce((sum, item) => {
-      const quantity = item.qty || item.quantity || 1;
-      const price = item.totalPrice || item.price || item.basePrice || 0;
-      return sum + (price * quantity);
-    }, 0);
-    
-    grandTotalEl.textContent = `₱${total.toLocaleString()}`;
-  }
+</div>
 
-  // ----- Place Order Functionality -----
-  if (placeOrderBtn) {
-    placeOrderBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      
-      // Basic form validation
-      if (!fullName.value || !email.value || !contact.value || !address.value) {
-        alert("Please fill in all required delivery information");
-        return;
-      }
 
-      if (cart.length === 0) {
-        alert("Your cart is empty!");
-        return;
-      }
+<!-- Payment method -->
+<div class="payment-method">
+  <h3>Payment Method</h3>
+  <label><input type="radio" name="payment" value="cod" checked> Cash on Delivery</label>
+  <label><input type="radio" name="payment" value="gcash"> GCash</label>
+</div>
 
-      // Generate unique order ID
-      const orderId = 'ORD-' + Date.now();
+<!-- CTA -->
+<button id="place-order-btn">Place Order</button>
 
-      // Create order object (matches order-status.js expected format)
-      const order = {
-        id: orderId, // Changed from orderId to id for consistency
-        customer: { // Changed structure to match order-status.js
-          name: fullName.value,
-          contact: contact.value,
-          address: address.value,
-          email: email.value
-        },
-        items: cart.map(item => ({ // Changed structure to match order-status.js
-          name: item.name,
-          price: item.totalPrice || item.price || item.basePrice || 0,
-          quantity: item.qty || item.quantity || 1,
-          size: item.size || "Regular",
-          sugar: item.sugar || "Standard",
-          addons: item.addons || [],
-          image: item.image
-        })),
-        status: "received", // Initial status
-        paymentMethod: document.querySelector('input[name="payment"]:checked').value,
-        notes: notes.value,
-        timestamps: {
-          placed: new Date().toISOString(),
-          received: new Date().toISOString() // Set received timestamp immediately
-        },
-        total: cart.reduce((sum, item) => {
-          const quantity = item.qty || item.quantity || 1;
-          const price = item.totalPrice || item.price || item.basePrice || 0;
-          return sum + (price * quantity);
-        }, 0)
-      };
+      </div>
+    </div>
+  </main>
 
-      // Save order to localStorage
-      const orders = JSON.parse(localStorage.getItem("orders")) || [];
-      orders.push(order);
-      localStorage.setItem("orders", JSON.stringify(orders));
+  <div id="footer"></div>
 
-      // Store order ID for order-status page
-      sessionStorage.setItem('lastOrderId', orderId);
-
-      // Clear cart
-      localStorage.removeItem("cart");
-
-      // REDIRECT TO ORDER STATUS PAGE WITH ORDER ID
-      window.location.href = `order-status.html?orderId=${orderId}`;
-      
-      // Remove the alert since we're redirecting immediately
-      // alert(`Order placed successfully! Order ID: ${order.orderId}`);
-    });
-  }
-
-  // ----- Back to Cart Button -----
-  const backToCartBtn = document.querySelector('.back-to-cart-btn');
-  if (backToCartBtn) {
-    backToCartBtn.addEventListener('click', () => {
-      window.location.href = 'cart.html';
-    });
-  }
-
-  // ----- Initial Load -----
-  loadCart();
-});
+  <script src="../JS/header-footer.js"></script>
+  <script src="../JS/checkout.js"></script>
+</body>
+</html>
