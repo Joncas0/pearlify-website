@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pearlify - Order Management</title>
+    
+    <link rel="stylesheet" href="../CSS/admin-sidebar.css">
+    <link rel="stylesheet" href="../CSS/admin-orders.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="sidebar"></div>
+
+    <main class="admin-dashboard">
+        <!-- Simple Header -->
+        <div class="dashboard-header">
+            <h1>Order Management</h1>
+        </div>
+
+        <!-- ONE CONTAINER for Filters & Stats -->
+        <div class="dashboard-controls">
+            <!-- Filters Section -->
+            <div class="controls-filters">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label>Status</label>
+                        <select id="status-filter">
+                            <option value="all">All Orders</option>
+                            <option value="order_received">Order Received</option>
+                            <option value="preparing">Preparing</option>
+                            <option value="out_for_delivery">Out for Delivery</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Time Period</label>
+                        <select id="time-filter">
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="all">All Time</option>
+                        </select>
+                    </div>
+                    
+                    <button id="refresh-btn" class="btn-refresh">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Stats Section -->
+            <div class="controls-stats">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-info">
+                        <h3 id="pending-count">0</h3>
+                        <p>Pending Orders</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-utensils"></i></div>
+                    <div class="stat-info">
+                        <h3 id="preparing-count">0</h3>
+                        <p>Preparing</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-motorcycle"></i></div>
+                    <div class="stat-info">
+                        <h3 id="delivery-count">0</h3>
+                        <p>Out for Delivery</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-info">
+                        <h3 id="completed-count">0</h3>
+                        <p>Completed Today</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Container -->
+        <div class="orders-container">
+            <div class="section-header">
+                <h2>Current Orders (<span id="current-orders-count">0</span>)</h2>
+            </div>
+            
+            <div id="current-orders" class="orders-grid">
+                <!-- Orders will be loaded by JavaScript -->
+            </div>
+
+            <div class="section-header">
+                <h2>Completed Orders (<span id="delivered-count">0</span>)</h2>
+            </div>
+            
+            <div id="delivered-orders" class="orders-grid">
+                <!-- Orders will be loaded by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Timeline Modal -->
+        <div id="timeline-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Order Timeline</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="timeline-header">
+                        <h4 id="timeline-order-id"></h4>
+                        <p id="timeline-customer"></p>
+                    </div>
+                    <div class="timeline-container" id="timeline-content"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary close-modal">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cancel Modal -->
+        <div id="cancel-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Cancel Order</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Order: <strong id="cancel-order-id"></strong></p>
+                    <p>Customer: <strong id="cancel-customer-name"></strong></p>
+                    
+                    <div class="form-group">
+                        <label for="cancel-reason">Reason for Cancellation:</label>
+                        <select id="cancel-reason" class="form-control">
+                            <option value="">Select a reason</option>
+                            <option value="invalid_info">Invalid customer information</option>
+                            <option value="out_of_stock">Out of stock</option>
+                            <option value="delivery_area">Delivery area not covered</option>
+                            <option value="payment_issue">Payment issue</option>
+                            <option value="prank_order">Prank/fake order</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cancel-notes">Additional Notes (optional):</label>
+                        <textarea id="cancel-notes" class="form-control" rows="3" placeholder="Add any additional notes..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary close-modal">Go Back</button>
+                    <button id="confirm-cancel-btn" class="btn-danger">Cancel Order</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../JS/admin-sidebar.js"></script>
+    <script src="../JS/admin-orders.js"></script>
+</body>
+</html>
