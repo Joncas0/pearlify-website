@@ -1,4 +1,4 @@
-// checkout.js — UPDATED VERSION WITH ORDER STATUS REDIRECT
+// checkout.js — UPDATED VERSION WITH ORDER STATUS REDIRECT// checkout.js — UPDATED VERSION WITH ORDER STATUS REDIRECT
 
 document.addEventListener("DOMContentLoaded", () => {
   // ----- DOM Elements -----
