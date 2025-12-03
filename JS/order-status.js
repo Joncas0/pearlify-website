@@ -1,5 +1,16 @@
-// order-status.js
-// Backend-friendly order status tracking system
+// Add this function to order-status.js (after DOMContentLoaded event)
+function getStatusText(status) {
+    const statusMap = {
+        'order_received': 'Order Received',
+        'preparing': 'Preparing',
+        'out_for_delivery': 'Out for Delivery',
+        'delivered': 'Delivered',
+        'cancelled': 'Cancelled'
+    };
+    return statusMap[status] || status;
+}
+
+// order-status.js - UPDATED FOR ADMIN INTEGRATION
 
 document.addEventListener("DOMContentLoaded", () => {
     // DOM Elements
@@ -12,44 +23,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (refreshBtn) {
         refreshBtn.addEventListener('click', loadOrderStatus);
     }
+    
+    // Auto-refresh every 30 seconds
+    setInterval(loadOrderStatus, 30000);
 });
-
-// ========================
-// BACKEND-FRIENDLY DATA STRUCTURE
-// ========================
-
-/**
- * Order Status Data Structure (Example for backend developers)
- * 
- * Expected order object structure:
- * {
- *   id: "ORD-123456789",
- *   customer: {
- *     name: "John Doe",
- *     contact: "09123456789",
- *     address: "123 Main Street, City"
- *   },
- *   items: [
- *     {
- *       name: "Wintermelon Milk Tea",
- *       price: 85,
- *       quantity: 2,
- *       size: "Regular",
- *       sugar: "50%",
- *       addons: ["Pearls", "Cheese Foam"]
- *     }
- *   ],
- *   status: "preparing", // received, preparing, delivery, delivered
- *   timestamps: {
- *     placed: "2024-01-15T10:30:00Z",
- *     received: "2024-01-15T10:35:00Z",
- *     preparing: "2024-01-15T10:40:00Z",
- *     delivery: "2024-01-15T11:00:00Z",
- *     delivered: "2024-01-15T11:30:00Z"
- *   },
- *   total: 170
- * }
- */
 
 // ========================
 // ORDER STATUS MANAGEMENT
@@ -57,10 +34,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /**
  * Load and display order status
- * Backend integration point: Replace localStorage with API call
  */
 function loadOrderStatus() {
-    // Get order ID from URL parameters or use demo data
+    // Get order ID from URL or storage
     const urlParams = new URLSearchParams(window.location.search);
     const orderId = urlParams.get('orderId') || getStoredOrderId();
     
@@ -69,8 +45,6 @@ function loadOrderStatus() {
         return;
     }
     
-    // BACKEND INTEGRATION POINT:
-    // Replace this with: fetch(`/api/orders/${orderId}`)
     const order = getOrderById(orderId);
     
     if (order) {
@@ -82,13 +56,15 @@ function loadOrderStatus() {
 }
 
 /**
- * Get order by ID - SIMULATES BACKEND CALL
- * Backend developers: Replace with actual database query
+ * Get order by ID - READS FROM LOCALSTORAGE
  */
 function getOrderById(orderId) {
-    // SIMULATION: Get from localStorage (replace with API call)
     try {
-        const orders = JSON.parse(localStorage.getItem('orders')) || [];
+        // Check multiple possible storage locations
+        const orders = JSON.parse(localStorage.getItem('orders')) || 
+                      JSON.parse(localStorage.getItem('pearlifyOrders')) || 
+                      JSON.parse(localStorage.getItem('customerOrders')) || 
+                      [];
         return orders.find(order => order.id === orderId);
     } catch (error) {
         console.error('Error fetching order:', error);
@@ -98,7 +74,6 @@ function getOrderById(orderId) {
 
 /**
  * Get stored order ID from session
- * Backend: Can use session storage or cookies
  */
 function getStoredOrderId() {
     return sessionStorage.getItem('lastOrderId');
@@ -122,8 +97,15 @@ function displayOrderStatus(order) {
  * Update order header information
  */
 function updateOrderHeader(order) {
-    document.getElementById('order-id').textContent = order.id;
-    document.getElementById('order-date').textContent = formatDateTime(order.timestamps.placed);
+    const orderIdEl = document.getElementById('order-id');
+    const orderDateEl = document.getElementById('order-date');
+    const orderStatusEl = document.getElementById('order-status-text');
+    
+    if (orderIdEl) orderIdEl.textContent = order.id;
+    if (orderDateEl && order.timestamps && order.timestamps.placed) {
+        orderDateEl.textContent = formatDateTime(order.timestamps.placed);
+    }
+    if (orderStatusEl) orderStatusEl.textContent = getStatusText(order.status);
 }
 
 /**
@@ -131,34 +113,39 @@ function updateOrderHeader(order) {
  */
 function updateStatusTimeline(order) {
     const statusSteps = {
-        'received': 1,
+        'order_received': 1,
         'preparing': 2, 
-        'delivery': 3,
-        'delivered': 4
+        'out_for_delivery': 3,
+        'delivered': 4,
+        'cancelled': 0
     };
     
     const currentStep = statusSteps[order.status] || 1;
     
-    // Reset all steps
-    document.querySelectorAll('.status-step').forEach(step => {
-        step.classList.remove('active', 'completed');
-    });
-    
-    // Activate current and previous steps
+    // Update step indicators
     document.querySelectorAll('.status-step').forEach((step, index) => {
         const stepNumber = index + 1;
+        const stepStatus = step.dataset.status;
+        
+        step.classList.remove('active', 'completed');
         
         if (stepNumber < currentStep) {
             step.classList.add('completed');
-        } else if (stepNumber === currentStep) {
+        } else if (stepNumber === currentStep && order.status !== 'cancelled') {
             step.classList.add('active');
         }
         
-        // Update timestamps
-        const status = step.dataset.status;
+        // Update timestamps - map step status to timestamp keys
+        let timestampKey = stepStatus;
+        if (stepStatus === 'order_received') {
+            timestampKey = 'order_received';
+        } else if (stepStatus === 'out_for_delivery') {
+            timestampKey = 'out_for_delivery';
+        }
+        
         const timeElement = step.querySelector('.step-time');
-        if (order.timestamps[status]) {
-            timeElement.textContent = formatDateTime(order.timestamps[status]);
+        if (order.timestamps && order.timestamps[timestampKey]) {
+            timeElement.textContent = formatDateTime(order.timestamps[timestampKey]);
             timeElement.style.display = 'block';
         } else {
             timeElement.style.display = 'none';
@@ -173,37 +160,50 @@ function updateOrderDetails(order) {
     const itemsContainer = document.getElementById('order-items');
     const totalElement = document.getElementById('order-total');
     
+    if (!itemsContainer) return;
+    
     itemsContainer.innerHTML = '';
     
-    order.items.forEach(item => {
-        const itemElement = document.createElement('div');
-        itemElement.className = 'order-item';
-        
-        itemElement.innerHTML = `
-            <div class="item-info">
-                <strong>${item.name}</strong>
-                <div class="item-meta">
-                    ${item.size || 'Regular'} • ${item.sugar || '100%'} 
-                    ${item.addons && item.addons.length > 0 ? `• ${item.addons.join(', ')}` : ''}
+    if (order.items && order.items.length > 0) {
+        order.items.forEach(item => {
+            const itemElement = document.createElement('div');
+            itemElement.className = 'order-item';
+            
+            itemElement.innerHTML = `
+                <div class="item-info">
+                    <strong>${item.name || 'Item'}</strong>
+                    <div class="item-meta">
+                        ${item.size ? item.size + ' • ' : ''} 
+                        ${item.sugar || ''} 
+                        ${item.addons && item.addons.length > 0 ? `• ${item.addons.join(', ')}` : ''}
+                    </div>
                 </div>
-            </div>
-            <div class="item-qty">×${item.quantity}</div>
-            <div class="item-price">₱${(item.price * item.quantity).toLocaleString()}</div>
-        `;
-        
-        itemsContainer.appendChild(itemElement);
-    });
+                <div class="item-qty">×${item.quantity || 1}</div>
+                <div class="item-price">₱${((item.price || 0) * (item.quantity || 1)).toLocaleString()}</div>
+            `;
+            
+            itemsContainer.appendChild(itemElement);
+        });
+    }
     
-    totalElement.textContent = `₱${order.total.toLocaleString()}`;
+    if (totalElement) {
+        totalElement.textContent = `₱${(order.total || 0).toLocaleString()}`;
+    }
 }
 
 /**
  * Update customer information
  */
 function updateCustomerInfo(order) {
-    document.getElementById('customer-name').textContent = order.customer.name;
-    document.getElementById('customer-contact').textContent = order.customer.contact;
-    document.getElementById('customer-address').textContent = order.customer.address;
+    const customer = order.customer || {};
+    
+    const nameEl = document.getElementById('customer-name');
+    const contactEl = document.getElementById('customer-contact');
+    const addressEl = document.getElementById('customer-address');
+    
+    if (nameEl) nameEl.textContent = customer.name || 'N/A';
+    if (contactEl) contactEl.textContent = customer.phone || customer.contact || 'N/A';
+    if (addressEl) addressEl.textContent = customer.address || 'N/A';
 }
 
 // ========================
@@ -212,7 +212,6 @@ function updateCustomerInfo(order) {
 
 /**
  * Format date time for display
- * Backend: Ensure timestamps are in ISO format
  */
 function formatDateTime(isoString) {
     if (!isoString) return '--';
@@ -227,7 +226,6 @@ function formatDateTime(isoString) {
             minute: '2-digit'
         });
     } catch (error) {
-        console.error('Error formatting date:', error);
         return '--';
     }
 }
@@ -239,7 +237,7 @@ function updateRefreshTime() {
     const now = new Date();
     const refreshNote = document.querySelector('.refresh-note');
     if (refreshNote) {
-        refreshNote.textContent = `Last updated: ${now.toLocaleTimeString()}`;
+        refreshNote.textContent = `Last updated: ${now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
     }
 }
 
@@ -248,110 +246,98 @@ function updateRefreshTime() {
  */
 function showNoOrderFound() {
     const statusContainer = document.querySelector('.status-container');
-    statusContainer.innerHTML = `
-        <div class="no-order">
-            <h2>Order Not Found</h2>
-            <p>We couldn't find your order. Please check your order ID or contact support.</p>
-            <button onclick="window.location.href='../index.html'" class="refresh-btn">
-                Return to Home
-            </button>
-        </div>
-    `;
-}
-
-// ========================
-// BACKEND INTEGRATION HELPERS
-// ========================
-
-/**
- * Backend developers: Use these functions for API integration
- */
-
-/**
- * Fetch order from backend API
- * @param {string} orderId 
- * @returns {Promise}
- */
-async function fetchOrderFromBackend(orderId) {
-    try {
-        const response = await fetch(`/api/orders/${orderId}`);
-        if (!response.ok) throw new Error('Order not found');
-        return await response.json();
-    } catch (error) {
-        console.error('API Error:', error);
-        return null;
+    if (statusContainer) {
+        statusContainer.innerHTML = `
+            <div class="no-order">
+                <h2>Order Not Found</h2>
+                <p>We couldn't find your order. Please check your order ID or contact support.</p>
+                <button onclick="window.location.href='../index.html'" class="refresh-btn">
+                    Return to Home
+                </button>
+            </div>
+        `;
     }
 }
 
-/**
- * Real-time updates with WebSocket (Optional)
- * Backend: Implement WebSocket server for real-time updates
- */
-function setupRealTimeUpdates(orderId) {
-    // Backend: Implement WebSocket connection
-    const socket = new WebSocket(`ws://yourserver.com/orders/${orderId}`);
-    
-    socket.onmessage = function(event) {
-        const order = JSON.parse(event.data);
-        displayOrderStatus(order);
-    };
-    
-    socket.onclose = function() {
-        console.log('WebSocket connection closed');
-    };
-}
-
 // ========================
-// DEMO DATA FOR TESTING
+// ORDER CREATION (When customer places order)
 // ========================
 
 /**
- * Create demo order for testing
- * Backend: Remove this function in production
+ * Create a new order when customer checks out
+ * This should be called from checkout.js
  */
-function createDemoOrder() {
-    const demoOrder = {
-        id: "ORD-" + Date.now(),
+// In order-status.js, update the createNewOrder function:
+
+function createNewOrder(orderData) {
+    const orderId = generateOrderId();
+    
+    const order = {
+        id: orderId,
         customer: {
-            name: "Juan Dela Cruz",
-            contact: "09123456789",
-            address: "123 Pearl Street, Manila"
+            name: orderData.fullName || '',
+            phone: orderData.contact || '',
+            address: orderData.address || '',
+            email: orderData.email || ''
         },
-        items: [
-            {
-                name: "Wintermelon Milk Tea",
-                price: 85,
-                quantity: 2,
-                size: "Large",
-                sugar: "50%",
-                addons: ["Pearls", "Crystal"]
-            },
-            {
-                name: "Taro Milk Tea",
-                price: 95,
-                quantity: 1,
-                size: "Regular",
-                sugar: "30%",
-                addons: ["Cheese Foam"]
-            }
-        ],
-        status: "preparing",
+        items: orderData.items || [],
+        total: orderData.total || 0,
+        // FIX: Make sure this matches admin-orders.js
+        status: 'order_received',
         timestamps: {
             placed: new Date().toISOString(),
-            received: new Date(Date.now() + 5 * 60000).toISOString(),
-            preparing: new Date(Date.now() + 10 * 60000).toISOString()
+            // FIX: Use the correct key
+            order_received: new Date().toISOString()
         },
-        total: 265
+        paymentMethod: orderData.paymentMethod || 'cod',
+        notes: orderData.notes || ''
     };
     
-    // Save to localStorage for demo
-    const orders = JSON.parse(localStorage.getItem('orders')) || [];
-    orders.push(demoOrder);
-    localStorage.setItem('orders', JSON.stringify(orders));
-    sessionStorage.setItem('lastOrderId', demoOrder.id);
+    // Save order to localStorage
+    saveOrderToStorage(order);
     
-    return demoOrder.id;
+    // Store order ID for customer to track
+    sessionStorage.setItem('lastOrderId', orderId);
+    
+    console.log('New order created:', orderId);
+    return orderId;
 }
 
-// Uncomment for testing:
-// createDemoOrder();
+/**
+ * Generate order ID
+ */
+function generateOrderId() {
+    const timestamp = Date.now().toString().slice(-8);
+    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    return `ORD-${timestamp}${random}`;
+}
+
+/**
+ * Save order to localStorage in multiple formats for compatibility
+ */
+function saveOrderToStorage(order) {
+    try {
+        // Save in 'orders' array (for order-status.js)
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+        orders.push(order);
+        localStorage.setItem('orders', JSON.stringify(orders));
+        
+        // Save in 'pearlifyOrders' array (for admin-orders.js)
+        let pearlifyOrders = JSON.parse(localStorage.getItem('pearlifyOrders')) || [];
+        pearlifyOrders.push(order);
+        localStorage.setItem('pearlifyOrders', JSON.stringify(pearlifyOrders));
+        
+        // Save in 'customerOrders' array (for backup)
+        let customerOrders = JSON.parse(localStorage.getItem('customerOrders')) || [];
+        customerOrders.push(order);
+        localStorage.setItem('customerOrders', JSON.stringify(customerOrders));
+        
+        console.log('Order saved to localStorage');
+    } catch (error) {
+        console.error('Error saving order:', error);
+    }
+}
+
+// ========================
+// INTEGRATION WITH CHECKOUT
+// ========================
