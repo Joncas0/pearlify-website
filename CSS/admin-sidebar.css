@@ -1,0 +1,150 @@
+:root {
+  --orange: #FF783E;
+  --black: #000;
+  --white: #fff;
+  --orange1: #FFEACF;
+}
+
+/* RESET */
+* {
+  box-sizing: border-box;
+  font-family: 'Onest', sans-serif;
+}
+
+/* ADD THIS TO THE TOP OF admin-orders.css */
+
+/* ===== SIDEBAR FIX ===== */
+body {
+    display: flex;
+    min-height: 100vh;
+    background: var(--bg);
+}
+
+/* Main content adjustment for sidebar */
+.admin-dashboard {
+    flex: 1;
+    margin-left: 250px; /* Adjust this based on your sidebar width */
+    padding: 30px;
+    max-width: calc(100vw - 250px);
+    overflow-x: hidden;
+}
+
+/* Ensure modals are above sidebar */
+.modal {
+    z-index: 2000;
+}
+
+/* Responsive for sidebar */
+@media (max-width: 992px) {
+    .admin-dashboard {
+        margin-left: 70px; /* Collapsed sidebar width */
+        max-width: calc(100vw - 70px);
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-dashboard {
+        margin-left: 0;
+        max-width: 100vw;
+        padding: 15px;
+    }
+}
+
+
+/* SIDEBAR */
+.admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100vh;
+  background: var(--white);
+  box-shadow: 2px 0 10px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+  z-index: 100;
+}
+
+/* COLLAPSED STATE */
+.admin-sidebar.collapsed {
+  width: 80px;
+}
+
+.admin-sidebar.collapsed span {
+  display: none;
+}
+
+/* BRAND */
+.sidebar-brand {
+  font-family: 'Lilita One', cursive;
+  font-size: 22px;
+  color: var(--orange);
+  padding: 20px;
+  text-align: center;
+}
+
+/* TOGGLE */
+.sidebar-toggle {
+  border: none;
+  background: var(--orange1);
+  color: var(--black);
+  padding: 10px;
+  cursor: pointer;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+/* NAV */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+}
+
+/* LINKS */
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px;
+  text-decoration: none;
+  color: var(--black);
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  background: var(--orange1);
+}
+
+.nav-link.active {
+  background: var(--orange);
+  color: var(--white);
+}
+
+/* ICONS */
+.nav-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+/* LOGOUT */
+.nav-link.logout {
+  margin-top: auto;
+  color: red;
+}
+
+/* MAIN CONTENT */
+.admin-main {
+  margin-left: 260px;
+  padding: 30px;
+  transition: margin-left 0.3s ease;
+}
+
+.admin-sidebar.collapsed + .admin-main {
+  margin-left: 80px;
+}
